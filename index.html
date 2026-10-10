@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Elige tu destino: Un juego interactivo donde pones a prueba tu suerte con una sola elección.">
+  <title>Elige tu destino</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-glow">
+    <div class="glow-orb orb-red"></div>
+    <div class="glow-orb orb-blue"></div>
+  </div>
+
+  <main class="game-container">
+    <header class="game-header">
+      <span class="badge">Prueba tu suerte</span>
+      <h1 class="game-title">Elige tu destino</h1>
+      <p class="game-subtitle">Dos caminos ante ti. Solo uno te llevará a la victoria.</p>
+    </header>
+
+    <section id="choice-section" class="choice-section">
+      <div class="buttons-grid">
+        <button id="btn-red" class="destiny-btn btn-red" type="button" aria-label="Elegir camino rojo">
+          <div class="btn-shine"></div>
+          <div class="btn-content">
+            <span class="btn-icon">🔥</span>
+            <span class="btn-title">Camino Rojo</span>
+            <span class="btn-hint">Poder &amp; Pasión</span>
+          </div>
+        </button>
+
+        <button id="btn-blue" class="destiny-btn btn-blue" type="button" aria-label="Elegir camino azul">
+          <div class="btn-shine"></div>
+          <div class="btn-content">
+            <span class="btn-icon">⚡</span>
+            <span class="btn-title">Camino Azul</span>
+            <span class="btn-hint">Sabiduría &amp; Misterio</span>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <section id="result-container" class="result-container hidden" aria-live="polite">
+      <div id="result-icon" class="result-badge">🏆</div>
+      <h2 id="result-message" class="result-message">Has ganado</h2>
+      <p id="result-description" class="result-description">¡El destino te sonríe hoy!</p>
+      
+      <div class="stats-bar">
+        <span class="stat-item">Victorias: <strong id="wins-count">0</strong></span>
+        <span class="stat-divider">•</span>
+        <span class="stat-item">Derrotas: <strong id="losses-count">0</strong></span>
+      </div>
+
+      <button id="btn-reset" class="btn-reset" type="button">
+        <span class="reset-icon">↺</span> Volver a jugar
+      </button>
+    </section>
+  </main>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <footer class="app-footer">
+    <p>¿Podrás desafiar las probabilidades?</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

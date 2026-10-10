@@ -1,0 +1,482 @@
+:root {
+  --bg-dark: #0a0e17;
+  --bg-card: rgba(18, 24, 38, 0.75);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* Red theme */
+  --red-from: #ff3366;
+  --red-to: #ff6b4a;
+  --red-glow: rgba(255, 51, 102, 0.45);
+  --red-border: rgba(255, 107, 74, 0.4);
+
+  /* Blue theme */
+  --blue-from: #0070f3;
+  --blue-to: #00d4ff;
+  --blue-glow: rgba(0, 112, 243, 0.45);
+  --blue-border: rgba(0, 212, 255, 0.4);
+
+  /* Win / Loss accents */
+  --win-color: #10b981;
+  --win-glow: rgba(16, 185, 129, 0.4);
+  --lose-color: #ef4444;
+  --lose-glow: rgba(239, 68, 68, 0.4);
+
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+  --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Ambient glow in background */
+.background-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.35;
+  transition: transform 1.2s ease-out;
+}
+
+.orb-red {
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, var(--red-from), transparent 70%);
+  top: -10%;
+  left: -5%;
+  animation: floatOrb 10s ease-in-out infinite alternate;
+}
+
+.orb-blue {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--blue-from), transparent 70%);
+  bottom: -10%;
+  right: -5%;
+  animation: floatOrb 12s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, 30px) scale(1.1); }
+  100% { transform: translate(-30px, -20px) scale(0.95); }
+}
+
+/* Confetti canvas */
+#confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 99;
+}
+
+/* Main Container Card */
+.game-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 680px;
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 44px 36px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7),
+              0 0 0 1px rgba(255, 255, 255, 0.05);
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+
+/* Header */
+.game-header {
+  margin-bottom: 36px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.game-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #ffffff 40%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.game-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 440px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Choice Section & Buttons Grid */
+.choice-section {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.choice-section.fade-out {
+  opacity: 0;
+  transform: scale(0.96);
+  pointer-events: none;
+}
+
+.buttons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Large Destiny Buttons */
+.destiny-btn {
+  position: relative;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 36px 20px;
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition-smooth);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.destiny-btn:focus-visible {
+  box-shadow: 0 0 0 4px #ffffff, 0 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.btn-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  transition: left 0.75s ease;
+}
+
+.destiny-btn:hover .btn-shine {
+  left: 200%;
+}
+
+.btn-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-icon {
+  font-size: 2.5rem;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.btn-hint {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Red Button Styling */
+.btn-red {
+  background: linear-gradient(135deg, var(--red-from), var(--red-to));
+  border: 1px solid var(--red-border);
+  box-shadow: 0 10px 28px -4px var(--red-glow),
+              0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-red:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 16px 36px 0px var(--red-glow),
+              0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-red:hover .btn-icon {
+  transform: scale(1.18) rotate(-8deg);
+}
+
+.btn-red:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+/* Blue Button Styling */
+.btn-blue {
+  background: linear-gradient(135deg, var(--blue-from), var(--blue-to));
+  border: 1px solid var(--blue-border);
+  box-shadow: 0 10px 28px -4px var(--blue-glow),
+              0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-blue:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 16px 36px 0px var(--blue-glow),
+              0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-blue:hover .btn-icon {
+  transform: scale(1.18) rotate(8deg);
+}
+
+.btn-blue:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+/* Result Section */
+.result-container {
+  padding: 16px 0 8px;
+  animation: resultReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.result-container.hidden {
+  display: none;
+}
+
+@keyframes resultReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.result-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  font-size: 3rem;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.result-badge.win {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.2), transparent 70%);
+  border: 2px solid var(--win-color);
+  box-shadow: 0 0 35px var(--win-glow);
+  animation: pulseWin 2s infinite ease-in-out;
+}
+
+.result-badge.lose {
+  background: radial-gradient(circle, rgba(239, 68, 68, 0.2), transparent 70%);
+  border: 2px solid var(--lose-color);
+  box-shadow: 0 0 35px var(--lose-glow);
+  animation: pulseLose 2s infinite ease-in-out;
+}
+
+@keyframes pulseWin {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 30px var(--win-glow); }
+  50% { transform: scale(1.06); box-shadow: 0 0 45px var(--win-glow); }
+}
+
+@keyframes pulseLose {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 30px var(--lose-glow); }
+  50% { transform: scale(1.04); box-shadow: 0 0 40px var(--lose-glow); }
+}
+
+.result-message {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.result-message.win {
+  color: var(--win-color);
+  text-shadow: 0 0 24px var(--win-glow);
+}
+
+.result-message.lose {
+  color: var(--lose-color);
+  text-shadow: 0 0 24px var(--lose-glow);
+}
+
+.result-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+}
+
+/* Stats counter bar */
+.stats-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 18px;
+  border-radius: 999px;
+  margin-bottom: 30px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.stat-item strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.stat-divider {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+/* Reset / Play Again Button */
+.btn-reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 16px 36px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+  transition: var(--transition-smooth);
+}
+
+.btn-reset:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 30px -3px rgba(99, 102, 241, 0.55);
+}
+
+.btn-reset:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+.reset-icon {
+  font-size: 1.3rem;
+  transition: transform 0.4s ease;
+}
+
+.btn-reset:hover .reset-icon {
+  transform: rotate(180deg);
+}
+
+/* Footer */
+.app-footer {
+  position: relative;
+  z-index: 10;
+  margin-top: 24px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Shake animation for defeat */
+.shake {
+  animation: shakeEffect 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shakeEffect {
+  10%, 90% { transform: translate3d(-2px, 0, 0); }
+  20%, 80% { transform: translate3d(4px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+  40%, 60% { transform: translate3d(6px, 0, 0); }
+}
+
+/* Responsive queries */
+@media (max-width: 600px) {
+  .game-container {
+    padding: 32px 20px;
+  }
+
+  .game-title {
+    font-size: 2.1rem;
+  }
+
+  .buttons-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .destiny-btn {
+    padding: 26px 16px;
+  }
+
+  .result-message {
+    font-size: 2.2rem;
+  }
+
+  .btn-reset {
+    width: 100%;
+    padding: 14px 20px;
+  }
+}
